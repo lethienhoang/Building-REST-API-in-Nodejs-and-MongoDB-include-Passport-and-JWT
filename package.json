@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:build": "webpack -w",
-    "dev": "webpack --mode development",
-    "build": "webpack --mode production"
+    "dev:build": "cross-env NODE_ENV=development webpack -w",
+    "dev": "cross-env NODE_ENV=development node dist/index.bundle.js"
   },
   "repository": {
     "type": "git",
