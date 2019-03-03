@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const config = require('../configs/enviroment.config');
+const config = require('./enviroment.config');
 const env = config.envConfig(process.env.NODE_ENV);
 //Removes the warning with promises 
 mongoose.Promise = global.Promise;
