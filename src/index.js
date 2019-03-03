@@ -1,7 +1,9 @@
-const app = require('express');
+const express = require('express');
+const config = require('../configs/enviroment.config');
+const env = config.envConfig(process.env.NODE_ENV);
+const app = express();
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, err => {
+app.listen(env.PORT, err => {
     if(err) {
         throw err;
     } else {
