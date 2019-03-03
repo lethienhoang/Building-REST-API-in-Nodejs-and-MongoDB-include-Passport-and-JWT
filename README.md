@@ -1,10 +1,6 @@
 # Building-REST-API-in-Nodejs-and-MongoDB-include-Passport-and-JWT
-In this lesson, we will start our journey on making REST APIs with NodeJS along with MongoDB database. 
-if you don’t have experience on Nodejs and MongoDB
-
-
 What will we be making?
-We will be making a website very similar to the Medium website with REST standards. We will also use the following functionalities:
+I use the following functionalities:
 
 Authentication local + JWT
 User can create a post
@@ -23,3 +19,5 @@ Express
 Eslint
 Babel
 Webpack 2
+
+Setting up clean projects as real projects
