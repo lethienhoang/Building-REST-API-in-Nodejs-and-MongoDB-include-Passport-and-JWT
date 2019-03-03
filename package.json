@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:build": "cross-env NODE_ENV=development webpack -w",
+    "start-dev-set": "set NODE_ENV=development&& webpack --config webpack.development.config.js && node src/index.js",
+    "start-prod-set": "set NODE_ENV=production&& webpack --config webpack.production.config.js && node src/index.js",
     "dev": "cross-env NODE_ENV=development node dist/index.bundle.js"
   },
   "repository": {
