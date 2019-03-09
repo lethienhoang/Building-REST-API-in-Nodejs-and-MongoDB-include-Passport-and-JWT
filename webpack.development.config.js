@@ -1,3 +1,4 @@
+
 const nodeExternals = require('webpack-node-externals');
 const path = require('path');
 
@@ -19,6 +20,11 @@ module.exports = {
             exclude: /node_modules/,
             use: 'babel-loader'
         }]
+    },
+    resolve: {
+        alias: {
+            apiAlias: path.resolve(__dirname, './src/modules/')
+        }
     }
 }
 

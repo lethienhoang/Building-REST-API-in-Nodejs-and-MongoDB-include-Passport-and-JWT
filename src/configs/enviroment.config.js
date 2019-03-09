@@ -9,13 +9,11 @@ const devConfig = {
     DB_URL: constants.MONGO_URL_DEV
 };
 
-function envConfig(env){
+module.exports = function(env) {
     switch(env) {
         case constants.PROD_ENV:
             return prodConfig;
         default:
             return devConfig;
     }
-}
-
-exports.envConfig = envConfig;
+};

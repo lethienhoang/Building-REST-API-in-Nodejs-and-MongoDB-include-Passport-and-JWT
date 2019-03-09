@@ -1,7 +1,17 @@
 const express = require('express');
-const config = require('./configs/enviroment.config');
-const env = config.envConfig(process.env.NODE_ENV);
+const envConfig = require('./configs/enviroment.config');
+const middlewareConfig = require('./middleware/middleware');
+const apiRoutes = require('./modules');
+
+const env = envConfig(process.env.NODE_ENV);
 const app = express();
+
+middlewareConfig(app);
+app.get('/', (req, res) => {
+    res.send('Hello world!');
+});
+
+apiRoutes(app);
 
 app.listen(env.PORT, err => {    
     if(err) {
