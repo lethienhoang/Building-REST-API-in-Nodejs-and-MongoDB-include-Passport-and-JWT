@@ -7,10 +7,6 @@ const env = envConfig(process.env.NODE_ENV);
 const app = express();
 
 middlewareConfig(app);
-app.get('/', (req, res) => {
-    res.send('Hello world!');
-});
-
 apiRoutes(app);
 
 app.listen(env.PORT, err => {    

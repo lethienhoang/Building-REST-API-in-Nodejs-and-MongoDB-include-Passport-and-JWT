@@ -20,11 +20,6 @@ module.exports = {
             exclude: /node_modules/,
             use: 'babel-loader'
         }]
-    },
-    resolve: {
-        alias: {
-            apiAlias: path.resolve(__dirname, './src/modules/')
-        }
     }
 }
 

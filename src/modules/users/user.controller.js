@@ -1,6 +1,6 @@
 const User = require('./user.model');
 
-module.exports =  async function signUp(req, res) {
+exports.signUp_post =  async function(req, res) {
     try {
         
         const user = await User.create(req.body);
@@ -11,7 +11,7 @@ module.exports =  async function signUp(req, res) {
     }
 }
 
-module.exports =  async function signIn(req, res) {
+exports.signIn_post =  async function(req, res) {
     try {
 
     } catch (e) {
