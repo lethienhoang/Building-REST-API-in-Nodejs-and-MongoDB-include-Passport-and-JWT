@@ -2,6 +2,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const helmet = require('helmet');
+const passport = require('passport');
 // const { isPrimitive } =  require("util");
 const constants = require('../contansts/constants');
 
@@ -21,4 +22,6 @@ module.exports = function(app) {
     app.use(bodyParser.urlencoded({
         extended: true
     }));
+    app.use(passport.initialize());
+
 }

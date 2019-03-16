@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:build": "set NODE_ENV=development&& webpack --config webpack.development.config.js && node src/index.js",
-    "prod:build": "set NODE_ENV=production&& webpack --config webpack.production.config.js && node src/index.js",
+    "dev:build": "set NODE_ENV=development&& webpack --config webpack.development.config.js && nodemon src/index.js",
+    "prod:build": "set NODE_ENV=production&& webpack --config webpack.production.config.js && nodemon src/index.js",
     "dev": "cross-env NODE_ENV=development node dist/index.bundle.js",
     "prod": "cross-env NODE_ENV=development node dist/index.bundle.js"
   },
@@ -20,14 +20,20 @@
   },
   "homepage": "https://github.com/lethienhoang/Building-REST-API-in-Nodejs-and-MongoDB-include-Passport-and-JWT#readme",
   "dependencies": {
+    "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
     "cross-env": "^5.2.0",
     "express": "^4.16.4",
+    "express-validation": "^1.0.2",
     "helmet": "^3.15.1",
     "joi": "^14.3.1",
+    "lodash": "^4.17.11",
     "mongoose": "^5.4.16",
     "morgan": "^1.9.1",
+    "nodemon": "^1.18.10",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "util": "^0.11.1",
     "validator": "^10.11.0"
   },

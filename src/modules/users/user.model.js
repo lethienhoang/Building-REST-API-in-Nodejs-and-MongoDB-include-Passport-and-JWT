@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const { passwordReg } = require('./user.validations');
+const bcrypt =  require('bcrypt');
+const SALT_WORK_FACTOR = 10;
 
 const UserSchema = new mongoose.Schema({
     email: {
@@ -44,5 +46,33 @@ const UserSchema = new mongoose.Schema({
         }
     }
 });
+
+
+
+UserSchema.pre('save', function(next) {
+    
+    var user = this;
+    if (user.isModified('password') && user.password !== undefined) {  
+         // generate a salt
+        bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+            if (err) console.log(err);
+
+            bcrypt.hash(user.password, salt, function(err, hash) {
+                if (err) console.log(err);
+
+                user.password = hash;
+                next();
+            })
+        })     
+    } else {
+        next();
+    }
+   
+});
+
+UserSchema.methods.verifyPassword  = function(candidatePassword) {
+    return bcrypt.compare(candidatePassword, this.password);
+}
+
 
 module.exports =  mongoose.model('User', UserSchema);

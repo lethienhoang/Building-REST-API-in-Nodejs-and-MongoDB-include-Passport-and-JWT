@@ -2,12 +2,14 @@ const express = require('express');
 const envConfig = require('./configs/enviroment.config');
 const middlewareConfig = require('./middleware/middleware');
 const apiRoutes = require('./modules');
+const db = require('./configs/db.config');
 
 const env = envConfig(process.env.NODE_ENV);
 const app = express();
 
 middlewareConfig(app);
 apiRoutes(app);
+db(env);
 
 app.listen(env.PORT, err => {    
     if(err) {

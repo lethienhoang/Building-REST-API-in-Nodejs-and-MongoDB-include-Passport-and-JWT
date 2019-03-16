@@ -1,17 +1,21 @@
 const mongoose = require('mongoose');
-const config = require('./enviroment.config');
-const env = config.envConfig(process.env.NODE_ENV);
+const option = {
+    useNewUrlParser: true,
+    useCreateIndex: true
+}
+module.exports = function(env) {
 //Removes the warning with promises 
-mongoose.Promise = global.Promise;
+    mongoose.Promise = global.Promise;
 
-// Connection to db
-try {
-    mongoose.connect(env.DB_URL)
-}
-catch (err) {
-    mongoose.createConnection(env.DB_URL)
-}
+    // Connection to db
+    try {
+        mongoose.connect(env.DB_URL, option);
+    }
+    catch (err) {
+        mongoose.createConnection(env.DB_URL, option);
+    }
 
-mongoose.connection.once('open', () => console.log('Db is running')).on('error', e => {
-    throw e;
-})
+    mongoose.connection.once('open', () => console.log('Database is running')).on('error', e => {
+        throw e;
+    });
+}
