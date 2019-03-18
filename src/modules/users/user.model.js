@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const { passwordReg } = require('./user.validations');
 const bcrypt =  require('bcrypt');
-const SALT_WORK_FACTOR = 10;
+const constant = require('../../contansts/constants');
+const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
     email: {
@@ -54,7 +55,7 @@ UserSchema.pre('save', function(next) {
     var user = this;
     if (user.isModified('password') && user.password !== undefined) {  
          // generate a salt
-        bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+        bcrypt.genSalt(constant.SALT_WORK_FACTOR, function(err, salt) {
             if (err) console.log(err);
 
             bcrypt.hash(user.password, salt, function(err, hash) {
@@ -70,9 +71,38 @@ UserSchema.pre('save', function(next) {
    
 });
 
-UserSchema.methods.verifyPassword  = function(candidatePassword) {
-    return bcrypt.compare(candidatePassword, this.password);
+UserSchema.methods.verifyPassword  = function(candidatePassword, cb) {
+    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+        if (err) return cb(err);
+        cb(null, isMatch);
+    });
 }
 
+UserSchema.methods.generateJWT = function() {
+    const today = new Date();
+    const exp = new Date(today);
+
+    // Set expire
+    exp.setDate(today.getDate() + 5);
+
+    return jwt.sign({
+        id: this._id,
+        email: this.email,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        userName: this.userName,
+        exp: parseInt(exp.getTime() / 1000)
+    }, constant.JWT_SECRET)
+}
+
+UserSchema.methods.toAuthJSON = function(){
+    return {
+        username: this.userName,
+        email: this.email,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        token: this.generateJWT()
+    };
+};
 
 module.exports =  mongoose.model('User', UserSchema);

@@ -23,5 +23,6 @@ module.exports = function(app) {
         extended: true
     }));
     app.use(passport.initialize());
+    app.use(passport.session());
 
 }

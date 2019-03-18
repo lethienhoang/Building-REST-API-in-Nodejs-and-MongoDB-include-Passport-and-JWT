@@ -13,9 +13,9 @@ exports.signup = function()  {
      return signup;
  };
 
- exports.signin = function() {
+ exports.login = function() {
     const signin = {
-        userName: Joi.string().required(),
+        email: Joi.string().email().required(),
         password: Joi.string().required(),
     }
 

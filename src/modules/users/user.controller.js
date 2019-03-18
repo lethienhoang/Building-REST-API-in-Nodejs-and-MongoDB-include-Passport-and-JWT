@@ -1,5 +1,6 @@
 const User = require('./user.model');
 const _ = require('lodash');
+const passport = require('passport');
 
 exports.signUp_post =  async function(req, res) {
     try {
@@ -15,10 +16,23 @@ exports.signUp_post =  async function(req, res) {
     }
 }
 
-exports.login_post =  async function(req, res) {
+exports.login_post =  async function(req, res, next) {
     try {
-        res.status(200).send(req.user);
-        return next();
+        return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
+          if(err) {
+           return next(err);
+          }
+           
+          console.log(info);          
+          if(passportUser) {
+            const user = passportUser;
+            user.token = passportUser.generateJWT();
+        
+            return res.send({ user: user.toAuthJSON() });
+          }
+        
+          return res.status(400);
+          })(req, res, next);
         
     } catch (e) {
         return res.status(500).send(e);

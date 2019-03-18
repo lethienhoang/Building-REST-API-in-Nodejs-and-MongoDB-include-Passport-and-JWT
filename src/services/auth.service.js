@@ -1,28 +1,25 @@
+const jwt = require('jsonwebtoken');
+const constant = require('../contansts/constants');
 
-const passport = require('passport');
-const User = require('../modules/users/user.model');
-const LocalStrategy = require('passport-local').Strategy;
+function getTokenFromHeaders(req) {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token') {
+        return req.headers.authorization.split(' ')[1];
+    }
+}
 
-const localOpts = {
-    usernameField: 'email',
+
+var auth = {
+    required: jwt({
+        secret: constant.secret,
+        userProperty: 'payload',
+        getToken: getTokenFromHeaders
+    }),
+    optional: jwt({
+        secret: constant.secret,
+        userProperty: 'payload',
+        credentialsRequired: false,
+        getToken: getTokenFromHeaders
+    })
 };
 
-passport.use(new LocalStrategy(localOpts, async function(email, password, done) {
-    console.log(email + passport);
-    await User.findOne({email: email}, function(err, user) {
-        
-        if (err) { return done(err); }
-
-        if (!user) { return done(null, false); }
-
-        if (!user.verifyPassword(password)) { return done(null, false); }
-
-        return done(null, true);
-    });
-}));
-
-
-exports.authLocal = passport.authenticate('local', {
-    session: false,
-    // failureRedirect: '/login'
-});
+module.exports = auth;
