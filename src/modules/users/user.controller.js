@@ -9,7 +9,7 @@ exports.signUp_post =  async function(req, res) {
             if (err) throw err;
         });
         
-        return res.status(200).send(_.pick(user, ['email','firstName', 'lastName','userName']));
+        return res.status(200).send(user.toAuthJSON());
 
     } catch (e) {
         return res.status(500).send(e);
@@ -23,7 +23,6 @@ exports.login_post =  async function(req, res, next) {
            return next(err);
           }
            
-          console.log(info);          
           if(passportUser) {
             const user = passportUser;
             user.token = passportUser.generateJWT();
@@ -35,6 +34,42 @@ exports.login_post =  async function(req, res, next) {
           })(req, res, next);
         
     } catch (e) {
+        return res.status(500).send(e);
+    }
+}
+
+exports.getUserByid_get = async function(req, res) {
+
+    await User.findById(req.payload.id).select('-password').then(function(user){
+        if (!user) return res.status(404).send('User was not found');
+        res.send(_.pick(user, ['email','firstName', 'lastName','userName']));
+    }).catch(next);
+}
+
+exports.updateUser_put = async function(req, res) {
+    try {
+        const user = await User.findByIdAndUpdate(req.payload.id, _.pick(['firstName', 'lastName','userName']));
+
+        if (!user) return res.status(404).send('User was not found');
+
+        const _user = await user.save();
+        res.send(_.pick(_user, ['email','firstName', 'lastName','userName']));
+    }
+    catch (e) {
+        return res.status(500).send(e);
+    }
+}
+
+exports.changePassword_put =  async function(req, res) {
+    try {
+        const user = await User.findByIdAndUpdate(req.payload.id, _.pick(['password']));
+
+        if (!user) return res.status(404).send('User was not found');
+
+        const _user = await user.save();
+        res.send(_.pick(_user, ['email','firstName', 'lastName','userName']));
+    }
+    catch (e) {
         return res.status(500).send(e);
     }
 }

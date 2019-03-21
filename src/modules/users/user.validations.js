@@ -21,3 +21,22 @@ exports.signup = function()  {
 
     return signin;
  }
+
+ exports.update = function() {
+     const user = {
+        email: Joi.string().email().required(),
+        firstName: Joi.string().required(),
+        lastName: Joi.string().required(),
+        userName: Joi.string().required(),
+     }
+
+     return user;
+ }
+
+ exports.changePassword = function() {
+    const user = {
+       password: Joi.string().regex(passwordReg).required(),
+    }
+
+    return user;
+}

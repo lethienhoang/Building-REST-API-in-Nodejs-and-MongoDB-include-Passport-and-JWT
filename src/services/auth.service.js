@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('express-jwt');
 const constant = require('../contansts/constants');
 
 function getTokenFromHeaders(req) {
@@ -10,12 +10,12 @@ function getTokenFromHeaders(req) {
 
 var auth = {
     required: jwt({
-        secret: constant.secret,
+        secret: constant.JWT_SECRET,
         userProperty: 'payload',
         getToken: getTokenFromHeaders
     }),
     optional: jwt({
-        secret: constant.secret,
+        secret: constant.JWT_SECRET,
         userProperty: 'payload',
         credentialsRequired: false,
         getToken: getTokenFromHeaders
