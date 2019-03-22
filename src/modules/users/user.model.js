@@ -106,4 +106,13 @@ UserSchema.methods.toAuthJSON = function(){
     };
 };
 
+UserSchema.methods.getProfileByUserId = function(user) {
+    return {
+        email: this.email,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        userName: this.userName
+    }
+}
+
 module.exports =  mongoose.model('User', UserSchema);

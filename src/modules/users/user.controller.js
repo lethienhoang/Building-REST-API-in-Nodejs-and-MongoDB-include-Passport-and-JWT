@@ -40,10 +40,11 @@ exports.login_post =  async function(req, res, next) {
 
 exports.getUserByid_get = async function(req, res) {
 
-    await User.findById(req.payload.id).select('-password').then(function(user){
-        if (!user) return res.status(404).send('User was not found');
-        res.send(_.pick(user, ['email','firstName', 'lastName','userName']));
-    }).catch(next);
+    const user = await User.findById(req.payload.id).select('-password');
+    if (!user) return res.status(404).send('User was not found');
+
+    return res.status(200).send(_.pick(user, ['email','firstName', 'lastName','userName']));
+    
 }
 
 exports.updateUser_put = async function(req, res) {

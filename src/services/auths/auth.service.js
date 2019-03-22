@@ -1,5 +1,5 @@
 const jwt = require('express-jwt');
-const constant = require('../contansts/constants');
+const constant = require('../../contansts/constants');
 
 function getTokenFromHeaders(req) {
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token') {
