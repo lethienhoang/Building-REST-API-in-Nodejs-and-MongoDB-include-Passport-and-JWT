@@ -1,6 +1,7 @@
 const userRoutes = require('./users/user.routes');
 const articleRoutes = require('./articles/article.routes');
 const authRoutes = require('./auths/auth.routes');
+const commentRoutes = require('./comments/comment.routes');
 
 module.exports = function(app) {
     // user routes
@@ -10,4 +11,6 @@ module.exports = function(app) {
     
     // article routes
     app.use('/api/v1/article', articleRoutes);
+    // comments
+    app.use('/api/v1/article', commentRoutes);
 }

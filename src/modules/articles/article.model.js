@@ -7,11 +7,10 @@ const ArticleSchame = new moongoose.Schema({
         required: [true, 'Title is required'],
         
     },
-    body: String,
-    comment: [{
-        type: moongoose.Schema.Types.ObjectId, 
-        ref: 'Comment'       
-    }],
+    body: {
+        type: String,
+        required: [true, 'Content of article is required']
+    },
     tags: [{
         type: String
     }],
@@ -20,7 +19,9 @@ const ArticleSchame = new moongoose.Schema({
         default: 0
     },
     author: {
-        type: moongoose.Schema.Types.ObjectId, ref: 'User'
+        type: moongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true, 'Author is required']
     }
 }, { timestamps: true });
 
