@@ -7,10 +7,10 @@ exports.comment_post = async function(req, res) {
     try {
         if (!req.payload.id) return res.status(401).send('Authentication was invalid');
 
-        if (!req.body.articleId)  return res.status(404).send('Article was not found');
+        if (!req.params.id)  return res.status(404).send('Article was not found');
 
         const user = await User.findById(req.payload.id);
-        const article = await Article.findById(req.body.articleId);
+        const article = await Article.findById(req.params.id);
 
         const model = new Comment(_.pick(req.body, ['comment']));
         model.author = user;
@@ -27,7 +27,7 @@ exports.comment_post = async function(req, res) {
 
 exports.comment_get =  async function(req, res) {
     try {
-
+           
         let limit = 20;
         let offset = 0;
 
@@ -43,13 +43,16 @@ exports.comment_get =  async function(req, res) {
     
         }      
 
-        if (!req.body.articleId)  return res.status(404).send('Article was not found');
+        console.log(req.params.id);
+        if (!req.params.id)  return res.status(404).send('Id was not found');
 
-        const comments = Comment.findById(req.body.articleId)
+        const comments = Comment.findById(req.params.id)
         .limit(Number(limit))
             .skip(Number(offset))
             .sort({createAt:'desc'})
             .populate({path:'author',select:['userName','email', '_id']});
+
+        if (!comments) return res.status(404).send('Comment was not found');
 
         return res.status(200).send(comments);
     } catch (e) {

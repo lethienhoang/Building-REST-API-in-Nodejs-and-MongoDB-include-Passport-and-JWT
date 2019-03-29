@@ -1,0 +1,4 @@
+{
+    "secret_key_dev": "development",
+    "database_url_dev": "mongodb://localhost:27017/demo_api_dev"
+}

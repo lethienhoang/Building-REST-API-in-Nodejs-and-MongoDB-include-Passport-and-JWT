@@ -1,0 +1,4 @@
+{
+    "secret_key_prod": "production",
+    "database_url_prod": "mongodb://localhost:27017/demo_api_prod"
+}

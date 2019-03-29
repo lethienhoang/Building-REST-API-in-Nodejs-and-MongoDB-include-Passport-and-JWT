@@ -1,0 +1,4 @@
+{
+    "secret_key_test": "testing",
+    "database_url_prod": "mongodb://localhost:27017/demo_api_test"
+}
