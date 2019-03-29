@@ -9,7 +9,7 @@
     "test:build": "set NODE_ENV=none && nodemon src/index.js",
     "dev": "cross-env NODE_ENV=development node dist/index.bundle.js",
     "prod": "cross-env NODE_ENV=development node dist/index.bundle.js",
-    "test": "mocha --recursive src/tests/ "
+    "test": "mocha  --recursive src/tests/ "
   },
   "repository": {
     "type": "git",

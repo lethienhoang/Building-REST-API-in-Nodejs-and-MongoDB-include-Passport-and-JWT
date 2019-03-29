@@ -6,18 +6,13 @@ const request = require('supertest');
 chai.use(chaiHttp);
 chai.should();
 
-describe("Article", () => {
+describe("Article", function() {
     let token = '';
     var expect = chai.expect;
     // var host = "http://" + process.env.IP + ':' + process.env.PORT + '/api/v1';
     var host  = 'http://localhost:3000/api/v1';
-    const userCredentials = {
-        email: '',
-        password: ''
-    }
     // let's login the user before we run any tests
-    beforeEach((done) => { 
-
+    beforeEach("Setup data",(done) => { 
         var user = {
             email: 'testing@gmail.com',
             firstName: 'A',
@@ -25,37 +20,28 @@ describe("Article", () => {
             userName: 'abc',
             password: 'Abc@123456'
         };
-    
-        userCredentials.email = user.email;
-        userCredentials.password = user.password;
-        request(host)
+        chai.request(host)
         .post('/users/signup')
         .set('content-type', 'application/x-www-form-urlencoded')
         .send(user)
         .end(function (err, res) {
             expect(res).to.have.status(200);
             expect(res.body).to.be.a('object');
-            done();
+            token = res.body.token;
+            done(); 
         })
         
-        setTimeout(done, 700);
     })
 
-    describe("POST /", () => { 
-        it('should get a valid JWT token on successful login', (done) => {
-            request(host)
-            .post('/auth/login')
-            .set('content-type', 'application/x-www-form-urlencoded')
-            .send(userCredentials)
-            .end(function (err, res) {
-                expect(res).to.have.status(200);
-                expect(res.body.token).to.be.a('string');
-                token = res.body.token;    
-                done();  
-            });
+    
 
-        })
-    })
+    // describe("POST /", () => { 
+    //     this.timeout(2000);
+    //     it('should get a valid JWT token on successful login', (done) => {
+           
+
+    //     })
+    // })
     
     
     // after((done) => {
