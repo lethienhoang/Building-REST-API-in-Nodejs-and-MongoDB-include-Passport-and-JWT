@@ -4,10 +4,9 @@ const passport = require('passport');
 
 exports.signUp_post =  async function(req, res) {
     try {
-        const user = new User(_.pick(req.body, ['email','firstName', 'lastName','userName','password']));
-        await user.save(function(err) {
-            if (err) throw err;
-        });
+
+        const user =  new User(_.pick(req.body, ['email','firstName', 'lastName','userName','password']));
+        await user.save();
         
         return res.status(200).send(user.toAuthJSON());
 

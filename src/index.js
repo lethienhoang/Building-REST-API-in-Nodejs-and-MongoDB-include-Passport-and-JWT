@@ -15,7 +15,7 @@ db(env);
 configPassport(passport);
 logger(app);
 
-app.listen(env.PORT, err => {    
+const server = app.listen(env.PORT, err => {    
     if(err) {
         console.log(err);
         throw err;
@@ -25,4 +25,4 @@ app.listen(env.PORT, err => {
 });
 
 
-module.exports = app;
+module.exports = server;

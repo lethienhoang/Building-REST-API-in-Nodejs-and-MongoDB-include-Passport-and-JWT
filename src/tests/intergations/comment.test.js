@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 var expect = require('chai').expect;
-
+let server ;
 // Config chai
 chai.use(chaiHttp);
 chai.should();
@@ -9,10 +9,9 @@ chai.should();
 describe("Comments", function() {
     let token = '';
     
-    var host  = 'http://localhost:3000/api/v1';
     const articleId = '5c94892d18492e2c1841a777';
 
-    beforeEach("Setup data",(done) => { 
+    beforeEach("Setup data", async() => { 
         var user = {
             email: 'testing@gmail.com',
             firstName: 'A',
@@ -21,36 +20,30 @@ describe("Comments", function() {
             password: 'Abc@123456'
         };
 
-        chai.request(host)
+        const res = await chai.request(server)
         .post('/users/signup')
-        .set('content-type', 'application/x-www-form-urlencoded')
         .send(user)
-        .end(function (err, res) {
-            expect(res).to.have.status(200);
-            expect(res.body).to.be.a('object');
-            token = res.body.token;
-            done(); 
-        })
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.a('object');
+        token = res.body.token;
         
     })
+    afterEach(() => {
+        server.close();
+    });
 
     describe("POST /", () => {
         this.timeout(2000);        
-        it("It should create comment by acticleId", (done) => {            
+        it("It should create comment by acticleId", async (done) => {            
             const comment = {
                 comment: 'Testing'
             }
-            chai.request(host)
+            const res=  await chai.request(server)
             .post(`/article/${articleId}/comments`)
-            .set('content-type', 'application/x-www-form-urlencoded')
             .set('Authorization', 'Token ' + token)
             .send(comment)
-            .end(function (err, res) {
-                expect(err).to.be.null;
-                expect(res).to.have.status(200);
-                expect(res.body.comment).to.equal(comment);
-                done();
-            });
+            expect(res).to.have.status(200);
+            expect(res.body.comment).to.equal(comment);
         });
 
         
@@ -59,16 +52,11 @@ describe("Comments", function() {
 
     describe("GET /", () => {
         // Test get comment by articleId
-        it("It should return comment", (done) => {
-            chai.request(host)
+        it("It should return comment", async (done) => {
+            const res = chai.request(server)
                 .get(`/article/${articleId}/comments`)
-                .set('content-type', 'application/x-www-form-urlencoded')
-                .end(function (err, res) {
-                    expect(err).to.be.null;
-                    expect(res).to.have.status(200);
-                    expect(res.body).to.be.a('object');
-                    done();
-                });
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
         });
 
         
