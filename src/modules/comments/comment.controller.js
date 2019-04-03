@@ -2,9 +2,14 @@ const Comment = require('./comment.model');
 const _ = require('lodash');
 const Article = require('../articles/article.model');
 const User = require('../users/user.model');
+const commentValidation = require('./comment.validations');
+
 
 exports.comment_post = async function(req, res) {
     try {
+
+        commentValidation.comment(req.body);
+        
         if (!req.payload.id) return res.status(401).send('Authentication was invalid');
 
         if (!req.params.id)  return res.status(404).send('Article was not found');

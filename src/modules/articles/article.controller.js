@@ -1,7 +1,8 @@
 const _ = require('lodash');
 const Article = require('./article.model');
 const User = require('../users/user.model');
-const Comment = require('../comments/comment.model');
+const articleValidation = require('./article.validations');
+
 
 exports.article_search_get = async function(req, res) {
     try {
@@ -83,6 +84,8 @@ exports.feed_get = async function(req, res) {
 
 exports.article_post = async function(req, res) {
     try {
+
+        articleValidation.create_article(req.body);
 
         const user = await User.findById(req.payload.id);
 
