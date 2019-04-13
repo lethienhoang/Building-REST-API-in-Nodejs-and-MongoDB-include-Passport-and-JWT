@@ -8,8 +8,9 @@ const commentValidation = require('./comment.validations');
 exports.comment_post = async function(req, res) {
     try {
 
-        commentValidation.comment(req.body);
-        
+        const { error } = commentValidation.comment(req.body);
+		if (error) return res.status(400).send(error.details[0].message);
+		
         if (!req.payload.id) return res.status(401).send('Authentication was invalid');
 
         if (!req.params.id)  return res.status(404).send('Article was not found');

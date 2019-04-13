@@ -68,7 +68,7 @@ exports.feed_get = async function(req, res) {
         }      
        
         
-        const articles = await Article.find(query)
+        const articles = await Article.find(req.body.query)
             .limit(Number(limit))
             .skip(Number(offset))
             .sort({createAt:'desc'})
@@ -84,8 +84,9 @@ exports.feed_get = async function(req, res) {
 
 exports.article_post = async function(req, res) {
     try {
-
-        articleValidation.create_article(req.body);
+    
+        const { error } = articleValidation.create_article(req.body);
+		if (error) return res.status(400).send(error.details[0].message);
 
         const user = await User.findById(req.payload.id);
 

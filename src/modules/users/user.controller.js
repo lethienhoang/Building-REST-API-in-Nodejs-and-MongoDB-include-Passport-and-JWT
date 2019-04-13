@@ -5,8 +5,10 @@ const userValidation = require('./user.validations');
 
 exports.signUp_post =  async function(req, res) {
     try {
-        userValidation.signup(req.body);
-
+ 
+		const { error } = userValidation.signup(req.body);
+		if (error) return res.status(400).send(error.details[0].message);
+		
         const user =  new User(_.pick(req.body, ['email','firstName', 'lastName','userName','password']));
         await user.save();
         
@@ -51,7 +53,9 @@ exports.getUserByid_get = async function(req, res) {
 exports.updateUser_put = async function(req, res) {
     try {
 
-        userValidation.update(req.body);
+
+		const { error } = userValidation.update(req.body);
+		if (error) return res.status(400).send(error.details[0].message);
 
         const user = await User.findByIdAndUpdate(req.payload.id, _.pick(['firstName', 'lastName','userName']));
 
@@ -67,8 +71,10 @@ exports.updateUser_put = async function(req, res) {
 
 exports.changePassword_put =  async function(req, res) {
     try {
-        userValidation.changePassword(req.body);
-
+		
+		const { error } = userValidation.changePassword(req.body);
+		
+		if (error) return res.status(400).send(error.details[0].message);
         const user = await User.findByIdAndUpdate(req.payload.id, _.pick(['password']));
 
         if (!user) return res.status(404).send('User was not found');
